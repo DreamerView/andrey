@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #admin-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div id="admin-container">
+  <h1>Админ панель</h1>
+  <label for="question">Вопрос:</label>
+  <input type="text" id="question" placeholder="Введите вопрос">
+
+  <label for="options">Варианты (в форме):</label>
+  <input type="text" id="options" placeholder="Вариант 1, Вариант 2, Вариант 3 ...">
+
+  <label for="correct-answer">Правильный ответ:</label>
+  <input type="text" id="correct-answer" placeholder="Введите правильный ответ">
+
+  <button id="save-button">Сохранить</button>
+  <hr><br>
+  <a href="question.html">Посмотреть все вопросы</a>
+</div>
+
+<script>
+  document.getElementById("save-button").addEventListener("click", saveQuestion);
+
+  function saveQuestion() {
+    const question = document.getElementById("question").value;
+    const options = document.getElementById("options").value.split(',').map(option => option.trim());
+    const correctAnswer = document.getElementById("correct-answer").value;
+
+    if (question && options.length > 1 && options.indexOf(correctAnswer) !== -1) {
+      const quizData = JSON.parse(localStorage.getItem("quizData")) || [];
+      quizData.push({
+        question: question,
+        options: options,
+        correctAnswer: correctAnswer
+      });
+      localStorage.setItem("quizData", JSON.stringify(quizData));
+
+      // Clear input fields after saving
+      document.getElementById("question").value = "";
+      document.getElementById("options").value = "";
+      document.getElementById("correct-answer").value = "";
+
+      alert("Вопрос успешно сохранен!");
+    } else {
+      alert("Пожалуйста введите вопрос правильно!");
+    }
+  }
+</script>
+
+</body>
+</html>

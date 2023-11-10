@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Questions and Answers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Quiz вопросы и ответы</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Вопросы</th>
+      <th>Варианты</th>
+      <th>Ответ</th>
+    </tr>
+  </thead>
+  <tbody id="quiz-table-body"></tbody>
+</table>
+<hr><br>
+<a href="admin.html">Добавить вопрос</a>
+
+<script>
+  const quizData = JSON.parse(localStorage.getItem("quizData")) || [];
+  const quizTableBody = document.getElementById("quiz-table-body");
+
+  quizData.forEach((questionData, index) => {
+    const row = document.createElement("tr");
+    
+    const questionCell = document.createElement("td");
+    questionCell.textContent = questionData.question;
+    row.appendChild(questionCell);
+
+    const optionsCell = document.createElement("td");
+    optionsCell.textContent = questionData.options.join(', ');
+    row.appendChild(optionsCell);
+
+    const correctAnswerCell = document.createElement("td");
+    correctAnswerCell.textContent = questionData.correctAnswer;
+    row.appendChild(correctAnswerCell);
+
+    quizTableBody.appendChild(row);
+  });
+</script>
+
+</body>
+</html>

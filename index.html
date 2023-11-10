@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <style>
+    /* Styles remain the same as in the previous example */
+    /* ... */
+  </style>
+</head>
+<body>
+
+<div id="quiz-container">
+  <h1>Quiz-игра</h1>
+  <div id="question-container" class="question"></div>
+  <ul id="options-container" class="options"></ul>
+  <button id="next-button">Следующий</button>
+  <div id="result"></div>
+</div>
+<hr><br>
+<a href="admin.html">Добавить вопрос</a>
+
+<script>
+  let quizData = JSON.parse(localStorage.getItem("quizData")) || [];
+  let currentQuestion = 0;
+  let score = 0;
+
+  const questionContainer = document.getElementById("question-container");
+  const optionsContainer = document.getElementById("options-container");
+  const nextButton = document.getElementById("next-button");
+  const resultContainer = document.getElementById("result");
+
+  function loadQuestion() {
+    if (currentQuestion < quizData.length) {
+      const currentQuizData = quizData[currentQuestion];
+      questionContainer.textContent = currentQuizData.question;
+
+      optionsContainer.innerHTML = "";
+      currentQuizData.options.forEach((option, index) => {
+        const li = document.createElement("li");
+        li.textContent = option;
+        li.dataset.index = index;
+        li.addEventListener("click", checkAnswer);
+        optionsContainer.appendChild(li);
+      });
+    } else {
+      showResult();
+    }
+  }
+
+  function checkAnswer(event) {
+    const selectedOptionIndex = event.target.dataset.index;
+    const correctAnswerIndex = quizData[currentQuestion].options.indexOf(
+      quizData[currentQuestion].correctAnswer
+    );
+
+    if (selectedOptionIndex == correctAnswerIndex) {
+      score++;
+    }
+
+    if (currentQuestion < quizData.length - 1) {
+      currentQuestion++;
+      loadQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    questionContainer.textContent = "";
+    optionsContainer.innerHTML = "";
+    nextButton.style.display = "none";
+    resultContainer.textContent = `Ваш счет: ${score} из ${quizData.length}`;
+    localStorage.setItem("quizScore", score);
+  }
+
+  loadQuestion();
+</script>
+
+</script>
+
+</body>
+</html>
